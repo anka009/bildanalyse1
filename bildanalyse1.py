@@ -7,13 +7,15 @@ st.title("Dunkle Fleckengruppen erkennen 🎯")
 
 uploaded_file = st.file_uploader("Bild hochladen (JPG, PNG, TIFF)", type=["jpg", "jpeg", "png", "tif", "tiff"])
 
-intensity_threshold = st.slider("Intensitäts-Schwelle (0 = dunkel)", 0, 255, 60)
 min_area = st.slider("Minimale Fleckengröße (Pixel)", 10, 1000, 50)
 max_area = st.slider("Maximale Fleckengröße (Pixel)", min_area, 3000, 500)
 group_diameter = st.slider("Gruppenkreis-Durchmesser", 50, 1000, 200)
-# Neue Regler für Farbe und Liniendicke
-circle_color = st.color_picker("Kreisfarbe wählen 🎨", "#0000FF")  # Blau als Standard
-circle_width = st.slider("Liniendicke der Kreise", 1, 10, 4)        # Standard: 4 Pixel
+
+circle_color = st.color_picker("Kreisfarbe wählen 🎨", "#0000FF")
+circle_width = st.slider("Liniendicke der Kreise", 1, 10, 4)
+
+intensity_threshold = st.slider("Intensitäts-Schwelle (0 = dunkel)", 0, 255, 60)
+
 
 if uploaded_file:
     img = Image.open(uploaded_file).convert("L")
