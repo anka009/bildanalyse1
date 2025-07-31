@@ -7,7 +7,7 @@ st.title("Dunkle Fleckengruppen erkennen 🎯")
 
 uploaded_file = st.file_uploader("Bild hochladen (JPG, PNG, TIFF)", type=["jpg", "jpeg", "png", "tif", "tiff"])
 
-min_area = st.slider("Minimale Fleckengröße (Pixel)", 10, 500, 20)
+min_area = st.slider("Minimale Fleckengröße (Pixel)", 10, 500, 50)
 max_area = st.slider("Maximale Fleckengröße (Pixel)", min_area, 1000, 500)
 group_diameter = st.slider("Gruppenkreis-Durchmesser", 10, 500, 50)
 
