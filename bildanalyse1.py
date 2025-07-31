@@ -58,10 +58,19 @@ if uploaded_file:
     img = Image.open(uploaded_file).convert("L")
     img_array = np.array(img)
 
+    # 🔘 Button zur Schwellenwert-Suche
+    if st.button("🎯 Beste Intensitäts-Schwelle suchen"):
+        bester_wert, max_anzahl = berechne_beste_schwelle(
+            img_array, min_area, max_area, group_diameter
+        )
+        st.session_state.intensity = bester_wert
+        st.success(f"Empfohlene Schwelle: {bester_wert} → {max_anzahl} Gruppen erkannt")
 
+    # 🎚️ Slider mit aktualisiertem Startwert
     intensity_threshold = st.slider(
         "Intensitäts-Schwelle", 0, 255, value=st.session_state.intensity
     )
+
 
     # 🖼️ Fleckengruppen zeichnen
     mask = img_array < intensity_threshold
