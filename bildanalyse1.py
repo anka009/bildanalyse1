@@ -47,7 +47,7 @@ min_area = st.slider("Minimale Fleckengröße", 10, 500, 50)
 max_area = st.slider("Maximale Fleckengröße", min_area, 1000, 500)
 group_diameter = st.slider("Gruppendurchmesser", 20, 500, 100)
 circle_color = st.color_picker("Kreisfarbe 🎨", "#FF0000")
-circle_width = st.slider("Liniendicke der Kreise", 1, 10, 4)
+circle_width = st.slider("Liniendicke der Kreise", 1, 10, 6)
 
 # Initialwert setzen
 if "intensity" not in st.session_state:
