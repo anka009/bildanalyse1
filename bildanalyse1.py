@@ -9,7 +9,7 @@ uploaded_file = st.file_uploader("Bild hochladen (JPG, PNG, TIFF)", type=["jpg",
 
 min_area = st.slider("Minimale Fleckengröße (Pixel)", 10, 500, 50)
 max_area = st.slider("Maximale Fleckengröße (Pixel)", min_area, 1000, 500)
-group_diameter = st.slider("Gruppenkreis-Durchmesser", 10, 500, 50)
+group_diameter = st.slider("Gruppenkreis-Durchmesser", 10, 500, 100)
 
 circle_color = st.color_picker("Kreisfarbe wählen 🎨", "#0000FF")
 circle_width = st.slider("Liniendicke der Kreise", 1, 10, 4)
