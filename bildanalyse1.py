@@ -9,7 +9,7 @@ uploaded_file = st.file_uploader("Bild hochladen (JPG, PNG, TIFF)", type=["jpg",
 
 intensity_threshold = st.slider("Intensitäts-Schwelle (0 = dunkel)", 0, 255, 60)
 min_area = st.slider("Minimale Fleckengröße", 10, 500, 50)
-group_diameter = st.slider("Gruppenkreis-Durchmesser (Pixel)", 50, 1000, 200)
+group_diameter = st.slider("Gruppenkreis-Durchmesser (Pixel)", 10, 1000, 200)
 
 if uploaded_file:
     img = Image.open(uploaded_file).convert("L")
