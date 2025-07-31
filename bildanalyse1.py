@@ -1,42 +1,52 @@
-import cv2
+from PIL import Image, ImageDraw
 import numpy as np
 import matplotlib.pyplot as plt
 
 # Einstellungen
-image_path = "bild.jpg"  # Pfad zum Bild (tif, tiff, jpg, jpeg)
-intensity_threshold = 60  # Helligkeitsschwelle (je niedriger, desto dunkler)
-min_area = 50  # Minimale Fleckgröße in Pixel
+image_path = "bild.jpg"  # Pfad zum Bild (jpeg, jpg, tif, tiff)
+intensity_threshold = 60  # Grauwert-Schwelle (0–255)
+min_area = 50  # Minimale Fleckengröße in Pixel
 
-# Bild laden
-image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+# Bild laden und in Graustufen konvertieren
+img = Image.open(image_path).convert("L")
+img_array = np.array(img)
 
-# Nur dunkle Bereiche behalten
-_, dark_regions = cv2.threshold(image, intensity_threshold, 255, cv2.THRESH_BINARY_INV)
+# Maske für dunkle Pixel erstellen
+mask = img_array < intensity_threshold
 
-# Flecken finden
-contours, _ = cv2.findContours(dark_regions, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+# Flecken identifizieren mithilfe von Labeling
+from scipy.ndimage import label, find_objects
 
-# Originalbild zur Darstellung vorbereiten
-output_img = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+labeled_array, num_features = label(mask)
+objects = find_objects(labeled_array)
+
+# Kopie des Originalbilds für Darstellung
+img_draw = Image.new("RGB", img.size)
+img_draw.paste(img.convert("RGB"))
+draw = ImageDraw.Draw(img_draw)
+
 count = 0
-
-for contour in contours:
-    area = cv2.contourArea(contour)
-    if area > min_area:
+for obj_slice in objects:
+    # Fläche berechnen
+    area = np.sum(labeled_array[obj_slice] > 0)
+    if area >= min_area:
         count += 1
-        # Mittelpunkt und Radius berechnen
-        (x, y), radius = cv2.minEnclosingCircle(contour)
-        center = (int(x), int(y))
-        radius = int(radius)
-        # Großen Kreis zeichnen
-        cv2.circle(output_img, center, radius, (0, 0, 255), 2)
+        # Mittelpunkt bestimmen
+        y_center = (obj_slice[0].start + obj_slice[0].stop) // 2
+        x_center = (obj_slice[1].start + obj_slice[1].stop) // 2
+        radius = max((obj_slice[0].stop - obj_slice[0].start), (obj_slice[1].stop - obj_slice[1].start)) // 2
+        # Kreis zeichnen
+        draw.ellipse(
+            [(x_center - radius, y_center - radius), (x_center + radius, y_center + radius)],
+            outline="red",
+            width=2
+        )
 
 # Ergebnisse anzeigen
 print(f"Gefundene dunkle Flecken: {count}")
 
 plt.figure(figsize=(8, 8))
-plt.imshow(cv2.cvtColor(output_img, cv2.COLOR_BGR2RGB))
+plt.imshow(img_draw)
 plt.title(f"{count} dunkle Flecken gefunden")
-plt.axis('off')
+plt.axis("off")
 plt.show()
-
