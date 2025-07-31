@@ -44,6 +44,10 @@ def berechne_beste_schwelle(img_array, min_area, max_area, group_diameter):
 st.title("Dunkle Fleckengruppen erkennen 🎯")
 
 uploaded_file = st.file_uploader("Bild hochladen (JPG, PNG, TIFF)", type=["jpg", "jpeg", "png", "tif", "tiff"])
+
+min_area = st.slider("Minimale Fleckengröße (Pixel)", 10, 500, 50)
+max_area = st.slider("Maximale Fleckengröße (Pixel)", min_area, 1000, 500)
+group_diameter = st.slider("Gruppenkreis-Durchmesser", 10, 500, 100)
 if uploaded_file:
     img = Image.open(uploaded_file).convert("L")
     img_array = np.array(img)
@@ -51,10 +55,6 @@ if uploaded_file:
     # Beste Schwelle automatisch berechnen
     bester_wert, max_anzahl = berechne_beste_schwelle(img_array, min_area, max_area, group_diameter)
     st.info(f"🔎 Empfohlene Intensitäts-Schwelle: {bester_wert} (mit {max_anzahl} Gruppenkreisen)")
-
-min_area = st.slider("Minimale Fleckengröße (Pixel)", 10, 500, 50)
-max_area = st.slider("Maximale Fleckengröße (Pixel)", min_area, 1000, 500)
-group_diameter = st.slider("Gruppenkreis-Durchmesser", 10, 500, 100)
 
 circle_color = st.color_picker("Kreisfarbe wählen 🎨", "#0000FF")
 circle_width = st.slider("Liniendicke der Kreise", 1, 10, 4)
